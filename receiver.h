@@ -19,8 +19,8 @@ namespace messaging{
                 return sender(&q);
             }
 
-            dispatcher wait(){
-                return dispatcher(&q);
+            dispatcher wait(){  //* receiver函数如何实现阻塞等待的?
+                return dispatcher(&q);  //* dispatcher(&q)创建了一个临时对象，它创建后就会调用dispatcher的析构函数。disppatcher的析构函数是执行阻塞等待的逻辑部分
             }
     };
 }

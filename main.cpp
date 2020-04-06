@@ -27,39 +27,39 @@ int main()
         char c = getchar();
         switch (c)
         {
-        case '0':
             /* code */
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            atmqueue.send(digit_pressed(c));
-            break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                atmqueue.send(digit_pressed(c));
+                break;
 
-        case 'b':
-            atmqueue.send(balance_pressed());
-            break;
+            case 'b':
+                atmqueue.send(balance_pressed());
+                break;
 
-        case 'w':
-            atmqueue.send(withdraw_pressed(50));
-            break;
+            case 'w':
+                atmqueue.send(withdraw_pressed(50));
+                break;
 
-        case 'c':
-            atmqueue.send(cancel_pressed());
-            break;
+            case 'c':
+                atmqueue.send(cancel_pressed());
+                break;
 
-        case 'q':
-            quit_pressed = true;
-            break;
+            case 'q':
+                quit_pressed = true;
+                break;
 
-        case 'i':
-            atmqueue.send(card_inserted("acc1234"));
-            break;
+            case 'i':
+                atmqueue.send(card_inserted("acc1234"));
+                break;
             
         }
     }

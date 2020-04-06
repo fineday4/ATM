@@ -7,6 +7,10 @@
 #include "receiver.h"
 #include "withdraw.h"
 
+//! 角色模型：系统中有多个离散的角色（均运行在独立的线程上），用来发送消息以完成自己的任务，除了直接通过消息传递的状态外，没有任何共享状态。
+//* atm的角色是流程控制者，其逻辑机制适合用状态机实现
+
+
 
 class atm
 {
@@ -15,7 +19,7 @@ private:
     messaging::receiver incoming;
     messaging::sender bank;
     messaging::sender interface_hardware;
-    void (atm::*state)();
+    void (atm::*state)();  //* 状态机的状态表示，同时也是函数名
     std::string account;
     unsigned withdrawal_amount;
     std::string pin;

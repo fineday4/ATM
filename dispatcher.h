@@ -24,7 +24,7 @@ namespace messaging{
             void wait_and_dispatch()
             {
                 for(;;){
-                    auto msg = q->wait_and_pop();
+                    auto msg = q->wait_and_pop();  //*实现阻塞等待
                     dispatch(msg);
                 }
             }
@@ -55,8 +55,8 @@ namespace messaging{
 
             ~dispatcher() noexcept(false)
             {
-                if(!chained){
-                    wait_and_dispatch();
+                if(!chained){//* chained的初值为false,chained如何变为true的?
+                    wait_and_dispatch(); //* chained的值只有在dispatcher(dispatcher&& other)为true.该部分以抛出异常结束的
                 }
             }
     };
