@@ -12,7 +12,7 @@
 namespace messaging{
     class receiver{
         private:
-            queue q;
+            messaging::queue q;
         
         public:
             operator sender(){

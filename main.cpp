@@ -16,9 +16,9 @@ int main()
     interface_machine interface_hardware;
     atm atm_machine(bank.get_sender(), interface_hardware.get_sender());
     
-    std::thread bank_thread(&bank_machine::run, &bank);
-    std::thread if_thread(&interface_machine::run, &interface_hardware);
-    std::thread atm_thread(&atm::run, &atm_machine);
+    std::thread bank_thread(&bank_machine::run, &bank);   //* 
+    std::thread if_thread(&interface_machine::run, &interface_hardware);  //* 界面线程
+    std::thread atm_thread(&atm::run, &atm_machine);//* 
 
     messaging::sender atmqueue(atm_machine.get_sender());
 

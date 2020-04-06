@@ -2,19 +2,23 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-04 22:18:35 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 10:52:02
+ * @Last Modified time: 2020-04-06 07:50:23
  */
 #pragma once
 
-namespace messaging
-{
+#include <iostream>
+#include "messaging.h"
+
+namespace messaging{
+    
     template<typename PreviousDispatcher, typename Msg, typename Func>
-    class TemplateDispatcher{
-        private:
-            queue *q;
+    class TemplateDispatcher
+    {
+            messaging::queue *q;
             PreviousDispatcher *prev;
             Func f;
             bool chained;
+            
             TemplateDispatcher(TemplateDispatcher const &) = delete;
             TemplateDispatcher &operator=(TemplateDispatcher const &) = delete;
             
@@ -36,7 +40,7 @@ namespace messaging
                 if(wrapped_message<Msg> *wrapper = 
                 dynamic_cast<wrapped_message<Msg>*>(msg.get()))
                 {
-                    f(wrapped->contents);
+                    f(wrapper->contents);
                     return true;
                 }else{
                     return prev->dispatch(msg);
@@ -44,14 +48,14 @@ namespace messaging
             }
 
         public:
-            TemplateDispatcher(TemplateDispatcher &other):
-            q(other.q), prev(other.prev), f(std::move(other.f),chained(other.chained))
+            TemplateDispatcher(TemplateDispatcher &&other)
+            :q(other.q), prev(other.prev), f(std::move(other.f)),chained(other.chained)
             {
                 other.chained = true;
             }
 
-            TemplateDispatcher(queue *q_, PreviousDispatcher *prev_, Func &&f_):
-            q(q_), prev(prev_), f(f_), chained(false)
+            TemplateDispatcher(messaging::queue *q_, PreviousDispatcher *prev_, Func &&f_):
+            q(q_), prev(prev_), f(std::forward<Func>(f_)), chained(false)
             {
                 prev_->chained = true;
             }

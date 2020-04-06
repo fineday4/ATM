@@ -2,7 +2,7 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-05 08:35:59 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 10:51:35
+ * @Last Modified time: 2020-04-06 06:03:57
  */
 #pragma once
 
@@ -30,6 +30,17 @@ struct withdraw_denied
 {
     /* data */
 };
+
+struct cancel_withdrawal
+{
+    /* data */
+    std::string account;
+    unsigned amount;
+    cancel_withdrawal(std::string const &account_, unsigned amount_):
+    account(account_), amount(amount_)
+    {}
+};
+
 
 struct withdrawal_processed
 {

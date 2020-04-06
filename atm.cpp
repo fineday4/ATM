@@ -2,7 +2,7 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-05 08:55:19 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 10:53:37
+ * @Last Modified time: 2020-04-06 06:09:08
  */
 #include "receiver.h"
 #include "withdraw.h"
@@ -25,8 +25,8 @@ private:
         incoming.wait().handle<withdraw_ok>(
             [&](withdraw_ok const &msg)
             {
-                interface_hardware.send(issue_money(withdraw_amount));
-                bank.send(withdrawal_processed(account, withdraw_amount));
+                interface_hardware.send(issue_money(withdrawal_amount));
+                bank.send(withdrawal_processed(account, withdrawal_amount));
                 state=&atm::done_processing;
             }
         )
@@ -76,7 +76,7 @@ private:
         .handle<withdraw_pressed>(
             [&](withdraw_pressed const &msg)
             {
-                withdraw_amount = msg.amount;
+                withdrawal_amount = msg.amount;
                 bank.send(withdraw(account, msg.amount, incoming));
                 state = &atm::process_withdrawal;
             }
@@ -100,7 +100,7 @@ private:
     {
         incoming.wait()
         .handle<pin_verified>(
-            [&](cancel_pressed const &msg)
+            [&](pin_verified const &msg)
             {
                 state = &atm::wait_for_action;
             }
@@ -129,8 +129,8 @@ private:
             [&](digit_pressed const &msg)
             {
                 unsigned const pin_length = 4;
-                Pin += msg.digit;
-                if(pin.length() == pin.length)
+                pin += msg.digit;
+                if(pin.length() == pin_length)
                 {
                     bank.send(verify_pin(account, pin, incoming));
                     state = &atm::verifying_pin;
@@ -184,7 +184,7 @@ public:
 
     void done()
     {
-        get_sender().send(close_queue());
+        get_sender().send(messaging::close_queue());
     }
 
     void run()
@@ -194,7 +194,7 @@ public:
             for(;;){
                 (this->*state)();
             }
-        }catch(close_queue const &){
+        }catch(messaging::close_queue const &){
         }
     }
 

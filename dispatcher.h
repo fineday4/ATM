@@ -2,24 +2,25 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-03 07:00:48 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 10:51:44
+ * @Last Modified time: 2020-04-06 07:55:52
  */
 #pragma once
 
 #include "messaging.h"
+#include "TemplateDispatcher.h"
 
 namespace messaging{
     class close_queue{};
 
     class dispatcher{
-        private:
-            queue* q;
+            messaging::queue* q;
             bool chained;
             dispatcher(dispatcher const&) = delete;
             dispatcher& operator=(dispatcher const&) = delete;
 
-            template<typename Dispatch, typename Msg, typename Func>
+            template<typename Dispatcher, typename Msg, typename Func>
             friend class TemplateDispatcher;
+            
             void wait_and_dispatch()
             {
                 for(;;){
@@ -50,6 +51,13 @@ namespace messaging{
                 return TemplateDispatcher<dispatcher, Message, Func>(
                     q, this, std::forward<Func>(f)
                 );
+            }
+
+            ~dispatcher() noexcept(false)
+            {
+                if(!chained){
+                    wait_and_dispatch();
+                }
             }
     };
 }

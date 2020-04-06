@@ -65,7 +65,7 @@ public:
                     }
                 )
                 .handle<withdrawal_processed>(
-                    [&](cancel_pressed const &msg)
+                    [&](withdrawal_processed const &msg)
                     {
                     }
                 )

@@ -2,13 +2,15 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-05 10:59:32 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 21:51:28
+ * @Last Modified time: 2020-04-06 06:10:24
  */
 
 #include <iostream>
 
 #include "receiver.h"
 #include "withdraw.h"
+
+static std::mutex iom;
 
 class interface_machine
 {
