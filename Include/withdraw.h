@@ -2,11 +2,11 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-05 08:35:59 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-06 06:03:57
+ * @Last Modified time: 2020-04-08 06:55:02
  */
 #pragma once
 
-#include "sender.h"
+#include "Sender.h"
 
 
 struct withdraw
@@ -14,9 +14,9 @@ struct withdraw
     /* data */
     std::string account;
     unsigned amount;
-    mutable messaging::sender atm_queue;
+    mutable MESSAGE::Sender atm_queue;
     
-    withdraw(std::string const &account_, unsigned amount_, messaging::sender atm_queue_):
+    withdraw(std::string const &account_, unsigned amount_, MESSAGE::Sender atm_queue_):
     account(account_), amount(amount_), atm_queue(atm_queue_)
     {}
 };
@@ -111,8 +111,8 @@ struct verify_pin
     /* data */
     std::string account;
     std::string pin;
-    mutable messaging::sender atm_queue;
-    verify_pin(std::string const &account_, std::string const &pin_, messaging::sender atm_queue_):
+    mutable MESSAGE::Sender atm_queue;
+    verify_pin(std::string const &account_, std::string const &pin_, MESSAGE::Sender atm_queue_):
     account(account_), pin(pin_), atm_queue(atm_queue_)
     {}
 };
@@ -161,8 +161,8 @@ struct get_balance
 {
     /* data */
     std::string account;
-    mutable messaging::sender atm_queue;
-    get_balance(std::string const &account_, messaging::sender atm_queue_):
+    mutable MESSAGE::Sender atm_queue;
+    get_balance(std::string const &account_, MESSAGE::Sender atm_queue_):
     account(account_), atm_queue(atm_queue_)
     {}
 };

@@ -2,25 +2,25 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-05 21:51:47 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 22:08:24
+ * @Last Modified time: 2020-04-08 06:59:51
  */
 
 #include <thread>
-#include "bank_machine.cpp"
-#include "interface_machine.cpp"
-#include "atm.cpp"
+#include "../Include/Bank_machine.h"
+#include "../Include/Interface_machine.h"
+#include "../Include/Atm.h"
 
 int main()
 {
-    bank_machine bank;
-    interface_machine interface_hardware;
-    atm atm_machine(bank.get_sender(), interface_hardware.get_sender());
+    Bank_machine bank;
+    Interface_machine interface_hardware;
+    Atm atm_machine(bank.get_sender(), interface_hardware.get_sender());
     
-    std::thread bank_thread(&bank_machine::run, &bank);   //* 
-    std::thread if_thread(&interface_machine::run, &interface_hardware);  //* 界面线程
-    std::thread atm_thread(&atm::run, &atm_machine);//* 
+    std::thread bank_thread(&Bank_machine::run, &bank);   //* 
+    std::thread if_thread(&Interface_machine::run, &interface_hardware);  //* 界面线程
+    std::thread atm_thread(&Atm::run, &atm_machine);//* 
 
-    messaging::sender atmqueue(atm_machine.get_sender());
+    MESSAGE::Sender atmqueue(atm_machine.get_sender());
 
     bool quit_pressed = false;
     while(!quit_pressed){

@@ -2,7 +2,7 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-03 06:42:32 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-03 06:50:02
+ * @Last Modified time: 2020-04-08 06:45:16
  */
 
 #pragma once
@@ -12,7 +12,7 @@
 #include <queue>
 #include <memory>
 
-namespace messaging{
+namespace MESSAGE{
     struct message_base
     {
         /* data */
@@ -30,7 +30,7 @@ namespace messaging{
             {}
     };
 
-    class queue{
+    class Msg_queue{
         private:
             std::mutex m;
             std::condition_variable c;
@@ -38,22 +38,9 @@ namespace messaging{
         public:
             
             template<typename T>
-            void push(T const& msg){
-                std::lock_guard<std::mutex> lk(m);
-                q.push(std::make_shared<wrapped_message<T> > (msg) );
-                c.notify_all();
-            }
+            void push(T const& msg);
 
-            std::shared_ptr<message_base> wait_and_pop()
-            {
-                std::unique_lock<std::mutex> lk(m);
-                c.wait(lk, [&](){
-                    return !q.empty();
-                });
-                auto res = q.front();
-                q.pop();
-                return res;
-            }
+            std::shared_ptr<message_base> wait_and_pop();
             
     };
     

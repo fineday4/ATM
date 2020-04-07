@@ -2,19 +2,19 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-04 22:18:35 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-06 07:50:23
+ * @Last Modified time: 2020-04-08 07:08:51
  */
 #pragma once
 
 #include <iostream>
-#include "messaging.h"
+#include "Msg_queue.h"
 
-namespace messaging{
+namespace MESSAGE{
     
     template<typename PreviousDispatcher, typename Msg, typename Func>
     class TemplateDispatcher
     {
-            messaging::queue *q;
+            MESSAGE::Msg_queue *q;
             PreviousDispatcher *prev;
             Func f;
             bool chained;
@@ -54,7 +54,7 @@ namespace messaging{
                 other.chained = true;
             }
 
-            TemplateDispatcher(messaging::queue *q_, PreviousDispatcher *prev_, Func &&f_):
+            TemplateDispatcher(MESSAGE::Msg_queue *q_, PreviousDispatcher *prev_, Func &&f_):
             q(q_), prev(prev_), f(std::forward<Func>(f_)), chained(false)
             {
                 prev_->chained = true;
@@ -75,4 +75,4 @@ namespace messaging{
                 }
             }
     };
-} // namespace messaging
+} // namespace MESSAGE

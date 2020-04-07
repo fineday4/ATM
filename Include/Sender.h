@@ -2,22 +2,22 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-03 06:51:04 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-05 10:51:28
+ * @Last Modified time: 2020-04-08 06:51:04
  */
 #pragma once
 
-#include "messaging.h"
+#include "Msg_queue.h"
 
-namespace messaging{
-    class sender{
+namespace MESSAGE{
+    class Sender{
         private:
-            messaging::queue* q;
+            MESSAGE::Msg_queue* q;
         public:
-            sender():
+            Sender():
                 q(nullptr)
             {}
 
-            explicit sender(messaging::queue *q_)
+            explicit Sender(MESSAGE::Msg_queue *q_)
             :q(q_)
             {}
 
