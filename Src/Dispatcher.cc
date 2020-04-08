@@ -2,11 +2,19 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-03 07:00:48 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-08 07:19:47
+ * @Last Modified time: 2020-04-09 07:03:21
  */
 #include "../Include/Dispatcher.h"
 using namespace MESSAGE;
-            
+
+Dispatcher::Dispatcher(Dispatcher&& other):
+q(other.q),chained(other.chained){
+    other.chained = true;
+}
+
+Dispatcher::Dispatcher(Msg_queue *q_)
+:q(q_), chained(false){}
+
 void Dispatcher::wait_and_dispatch()
 {
     for(;;){
@@ -20,11 +28,4 @@ bool Dispatcher::dispatch(std::shared_ptr<message_base> const& msg){
         throw Close_queue();
     }
     return false;
-}
-
-template<typename Message, typename Func>
-TemplateDispatcher<Dispatcher, Message, Func>  Dispatcher::handle(Func &&f){
-    return TemplateDispatcher<Dispatcher, Message, Func>(
-        q, this, std::forward<Func>(f)
-    );
 }

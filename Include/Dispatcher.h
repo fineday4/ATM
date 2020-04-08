@@ -2,7 +2,7 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-03 07:00:48 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-08 07:18:23
+ * @Last Modified time: 2020-04-09 07:03:31
  */
 #pragma once
 
@@ -13,7 +13,7 @@ namespace MESSAGE{
     class Close_queue{};
 
     class Dispatcher{
-            MESSAGE::Msg_queue* q;
+            Msg_queue* q;
             bool chained;
             Dispatcher(Dispatcher const&) = delete;
             Dispatcher& operator=(Dispatcher const&) = delete;
@@ -26,16 +26,17 @@ namespace MESSAGE{
             bool dispatch(std::shared_ptr<message_base> const& msg);
 
         public:
-            Dispatcher(Dispatcher&& other):
-            q(other.q),chained(other.chained){
-                other.chained = true;
-            }
+            Dispatcher(Dispatcher&& other);
 
-            explicit Dispatcher(Msg_queue *q_):
-            q(q_), chained(false){}
+            explicit Dispatcher(Msg_queue *q_);
 
-            template<typename Message, typename Func>
-            TemplateDispatcher<Dispatcher, Message, Func> handle(Func &&f);
+        template<typename Message, typename Func>
+        TemplateDispatcher<Dispatcher, Message, Func> handle(Func &&f)
+        {
+            return TemplateDispatcher<Dispatcher, Message, Func>(
+                q, this, std::forward<Func>(f)
+            );
+        }
 
             ~Dispatcher() noexcept(false)
             {
