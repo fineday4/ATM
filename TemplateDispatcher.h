@@ -43,7 +43,7 @@ namespace messaging{
                     f(wrapper->contents);
                     return true;
                 }else{
-                    return prev->dispatch(msg);
+                    return prev->dispatch(msg);  //TODO: 当前没有数据时执行？？？？
                 }
             }
 
@@ -70,7 +70,7 @@ namespace messaging{
             
             ~TemplateDispatcher() noexcept(false)
             {
-                if(!chained){
+                if(!chained){  //TODO:析构函数中chained = true才结束，单这并不是循环而是判断。所以prev并不是析够掉了，而是一直在wait_and_dispatch中
                     wait_and_dispatch();
                 }
             }

@@ -10,23 +10,18 @@
 
 namespace messaging{
     class sender{
-        private:
-            messaging::queue* q;
+            messaging::queue *q_;
         public:
-            sender():
-                q(nullptr)
+            sender():q_(nullptr)
             {}
 
-            explicit sender(messaging::queue *q_)
-            :q(q_)
+            explicit sender(messaging::queue *q):q_(q)
             {}
 
-            template<typename Message>
-            void send(Message const & msg)
+            template<typename Msg>
+            void send(Msg const &msg)
             {
-                if(q){
-                    q->push(msg);
-                }
-            }            
+                q_->push(msg);
+            }
     };
 }
